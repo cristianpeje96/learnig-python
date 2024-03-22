@@ -2,10 +2,10 @@
 import sqlite3
 
 #Create a database connnection (Database name)
-con = sqlite3.connect('school.db')
+conn = sqlite3.connect('school.db')
 
 #Creating cursor object by conection => Let us execute sql commands or operations (Query)
-cur = con.cursor()
+cur = conn.cursor()
 
 #Create users table
 users_table = '''
@@ -13,7 +13,7 @@ users_table = '''
         id_users INTEGER PRIMARY KEY, 
         email TEXT(100) UNIQUE NOT NULL,
         password TEXT(250) NOT NULL,
-        status BOOLEAN NULL,
+        status BOOLEAN DEFAULT true,
         created_at DATETIME NOT NULL,
         updated_at DATETIME NOT NULL,
         deleted_at DATATIME NULL
@@ -115,9 +115,9 @@ cur.execute(departments_table)
 cur.execute(countries_table)
 
 #Save changes in database => Push to database
-con.commit()
+conn.commit()
 
-print("::: Database market has been created :::")
+print("::: Database school has been created :::")
 
 #Close connection
 #con.close()

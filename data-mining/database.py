@@ -1,37 +1,41 @@
+
 '''
-dev: joan c. script 
-description: config data base 
+Dev: Joan C.
+Script description: Configure SQLite3 data base
 '''
 
-# impor engine database packgae
+#Import engine database package
 import sqlite3
-import psycopg2
 
-#crear la conexion con la base de datos
-conn = sqlite3.connect('market.db')
+#Create a database connnection (Database name)
+con = sqlite3.connect('market.db')
 
-#create cursor objecte by conecction = permite ejecutar comandos sql
-cur = conn.cursor()
+#Creating cursor object by conection => Let us execute sql commands or operations (Query)
+cur = con.cursor()
 
-#create users table
+#Create users table
 user_table = '''
     CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY, 
         firstname TEXT NOT NULL,
         lastname TEXT NOT NULL,
-        ident_number TEXT UNIQUE NOT NULL,
+        ident_number TEXT  UNIQUE NOT NULL,
         email TEXT UNIQUE NOT NULL,
-        password TEXT NOT NULL
+        password TEXT NOT NULL,
+        status BOOLEAN DEFAULT true,
+        created_at TIMESTAMP DEFAULT (datetime('now','localtime')),
+        updated_at TIMESTAMP NULL,
+        deleted_at TIMESTAMP NULL
     );
 '''
-#ejecutar sql (query)
+
+#Execute SQL (Query)
 cur.execute(user_table)
 
-#save changes in data base
-#conn.commit()
+#Save changes in database => Push to database
+con.commit()
 
-print("::: DATABASE MARKET HAS BEEN CREATED :::")
+#print("::: Database market has been created :::")
 
-
-
-
+#Close connection
+#con.close()

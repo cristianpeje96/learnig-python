@@ -1,32 +1,31 @@
-from flask import Flask, render_template
-from database import conn, cur
+
+from flask import Flask, render_template, g
+from database import cur
 import sqlite3
-from flask import g
 
 app = Flask(__name__)
 
 DATABASE = 'market.db'
 
-def get_deb():
+def get_db():
     db = getattr(g, '_database', None)
     if db is None:
-        db= g._database = sqlite3.connect(DATABASE)
+        db = g._database = sqlite3.connect(DATABASE)
     return db
 
 @app.teardown_appcontext
 def close_connection(exception):
     db = getattr(g, '_database', None)
     if db is not None:
-        db.close()  
+        db.close()
 
 @app.route('/')
 def index():
-    conn = get_deb()
-    cur.execute('SELECT * FROM users')
-    data = cur.fetchall()
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM users")
+    data = cursor.fetchall()
     return render_template('index.html', data=data)
 
-if __name__ == '_main_':
+if __name__ == '__main__':
     app.run(debug=True)
-
-
